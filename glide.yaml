@@ -1,0 +1,10 @@
+package: migrationscript
+import:
+- package: git.ntteo.net/go-libs.git
+  subpackages:
+  - vault-client
+- package: github.com/Sirupsen/logrus
+- package: github.com/han/influxdb
+  subpackages:
+  - client/v2
+- package: gopkg.in/resty.v0
