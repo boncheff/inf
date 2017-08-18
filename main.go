@@ -24,7 +24,7 @@ func queryDB(c influx.Client, db string, dryRun bool, numberOfChunks uint64) {
 		qq := influx.NewQuery(fmt.Sprintf("SELECT first(value) FROM /%s/;", metric), db, "ns")
 		if r, err := c.Query(qq); err == nil {
 			if r.Error() != nil {
-				log.Infof("RESPONSE ERROR QUERING FIRST VALUE%+v", r.Error())
+				log.Infof("Response error querying 'first' value: %+v", r.Error())
 			}
 
 			for _, res := range r.Results {
@@ -55,7 +55,7 @@ func queryDB(c influx.Client, db string, dryRun bool, numberOfChunks uint64) {
 				q := influx.NewQuery(fmt.Sprintf("SELECT * FROM /%s/ WHERE time >= %d and time < %d", metric, from, to), db, "ns")
 				if response, err := c.Query(q); err == nil {
 					if response.Error() != nil {
-						log.Infof("RESPONSE ERROR %+v", response.Error())
+						log.Infof("Query response error: %+v", response.Error())
 					}
 
 					count := 0
@@ -169,6 +169,6 @@ func main() {
 	}
 	defer influxClient.Close()
 
-	log.Infof("custID: 416c300b-2164-4ecd-92e0-ff77fcf08bec")
-	queryDB(influxClient, "dbu"+strings.Replace("416c300b-2164-4ecd-92e0-ff77fcf08bec", "-", "_", -1), *dryRun, uint64(*numberOfChunks))
+	customerID := "dbu" + strings.Replace("416c300b-2164-4ecd-92e0-ff77fcf08bec", "-", "_", -1)
+	queryDB(influxClient, customerID, *dryRun, uint64(*numberOfChunks))
 }
